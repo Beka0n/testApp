@@ -1,0 +1,23 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t testapp .
+
+      - name: Run tests
+        run: docker run -p 888:80 testapp
+
+      - name: Check container health
+        run: curl localhost:888
